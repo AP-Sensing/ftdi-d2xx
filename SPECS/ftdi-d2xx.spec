@@ -1,7 +1,7 @@
 BuildArch:     noarch
 Name:          ftdi-d2xx
 Version:       1.4.27
-Release:       1
+Release:       2
 License:       GPLv3
 Summary:       RPM for the FTDI D2XX Linux driver.
 Distribution:  PhotonPonyOS
@@ -30,17 +30,17 @@ tar zxvf libftd2xx-x86_64-%{version}.tgz
 
 %install
 # Binary
-install -d -m 755 $RPM_BUILD_ROOT/usr/local/lib/
-install -m 644 release/build/libftd2xx.so.%{version} $RPM_BUILD_ROOT/usr/local/lib/
+install -d -m 755 $RPM_BUILD_ROOT/usr/lib/
+install -m 644 release/build/libftd2xx.so.%{version} $RPM_BUILD_ROOT/usr/lib/
 
-pushd $RPM_BUILD_ROOT/usr/local/lib/
+pushd $RPM_BUILD_ROOT/usr/lib/
 ln -s libftd2xx.so.%{version} libftd2xx.so
 popd
 
 # Header
-install -d -m 755 $RPM_BUILD_ROOT/usr/local/include
-install -m 644 release/ftd2xx.h $RPM_BUILD_ROOT/usr/local/include
-install -m 644 release/WinTypes.h $RPM_BUILD_ROOT/usr/local/include
+install -d -m 755 $RPM_BUILD_ROOT/usr/include
+install -m 644 release/ftd2xx.h $RPM_BUILD_ROOT/usr/include
+install -m 644 release/WinTypes.h $RPM_BUILD_ROOT/usr/include
 
 # Call ldconfig (https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/#_snippets)
 %post -p /sbin/ldconfig
@@ -48,11 +48,14 @@ install -m 644 release/WinTypes.h $RPM_BUILD_ROOT/usr/local/include
 %postun -p /sbin/ldconfig
 
 %files
-%attr(0644, root, root) /usr/local/lib/libftd2xx.so.%{version}
-%attr(0644, root, root) /usr/local/include/ftd2xx.h
-%attr(0644, root, root) /usr/local/include/WinTypes.h
-/usr/local/lib/libftd2xx.so
+%attr(0644, root, root) /usr/lib/libftd2xx.so.%{version}
+%attr(0644, root, root) /usr/include/ftd2xx.h
+%attr(0644, root, root) /usr/include/WinTypes.h
+/usr/lib/libftd2xx.so
 
 %changelog
+* Mon Jun 26 2023 Fabian Sauter <fabian.sauter+rpm@apsensing.com> - 1.4.27-2
+- Replaced all /usr/local paths with /usr
+
 * Thu Jun 22 2023 Fabian Sauter <fabian.sauter+rpm@apsensing.com> - 1.4.27-1
 - Initial release
